@@ -1,30 +1,12 @@
-FROM node:alpine AS deps
-WORKDIR /base
-
-COPY package.json package-lock.json ./
-RUN  npm install --production
-
-# ===========
-FROM node:alpine AS builder
-WORKDIR /build
-COPY --from=deps /base/node_modules ./node_modules
-
-COPY ./app /build/app
-COPY package.json yarn.lock ./
-
-COPY tsconfig.json .
-
-COPY next.config.js .
-
+FROM node:alpine as build-deps
+WORKDIR /usr/src/app
+COPY package*.json .
+RUN npm ci
+COPY . ./
 RUN npm run build
 
-# ===========
+FROM nginx:alpine
+COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 
-FROM node:alpine AS runner
-WORKDIR /app
-
-COPY --from=builder /build/.next ./.next
-COPY --from=builder /build/node_modules ./node_modules
-COPY --from=builder /build/package.json ./package.json
-
-CMD ["npm", "start"]
