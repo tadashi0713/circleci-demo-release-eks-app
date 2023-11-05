@@ -19,7 +19,7 @@ jobs:
           tag: '${CIRCLE_SHA1}'
       - aws-eks/update-kubeconfig-with-authenticator:
           install-aws-cli: false
-          # cluster-authentication-role-arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
+          cluster-authentication-role-arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           aws-profile: default
           install-kubectl: true
           kubectl-version: v1.28.3
