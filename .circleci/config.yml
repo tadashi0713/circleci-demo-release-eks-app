@@ -8,16 +8,14 @@ jobs:
   build_push_ecr:
     machine:
       docker_layer_caching: true
-      resource_class: arm.large
     steps:
       - checkout
       - aws-ecr/build_and_push_image: # AWS ECR Orb
           auth:
             - aws-cli/setup:
                 role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
-          platform: linux/arm64 # arm64 Docker image
           repo: tadashi-demo-release-eks-app
-          tag: '${CIRCLE_SHA1}-arm64'
+          tag: '${CIRCLE_SHA1}'
 
 workflows:
   test_and_deploy: 
