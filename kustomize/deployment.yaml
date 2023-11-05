@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: circleci-demo-release-eks-app
+    version: 1.0.0
+  annotations:
+    circleci.com/project-id: 775531fd-7f01-4c74-8570-08cc0131ca00
+  name: circleci-demo-release-eks-app
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: circleci-demo-release-eks-app
+  template:
+    metadata:
+      labels:
+        app: circleci-demo-release-eks-app
+        version: 1.0.0
+    spec:
+      containers:
+        - image: circleci-demo-release-eks-app
+          name: circleci-demo-release-eks-app
+          ports:
+            - containerPort: 80
