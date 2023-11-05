@@ -14,8 +14,9 @@ jobs:
           auth:
             - aws-cli/setup:
                 role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
+          platform: linux/arm64 # arm64 Docker image
           repo: tadashi-demo-release-eks-app
-          tag: '${CIRCLE_SHA1}'
+          tag: '${CIRCLE_SHA1}-arm64'
 
 workflows:
   test_and_deploy: 
