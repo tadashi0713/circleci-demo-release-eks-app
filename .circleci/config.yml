@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@4.1.1
   aws-ecr: circleci/aws-ecr@9.0.1
+  aws-eks: circleci/aws-eks@2.2.0
 
 jobs:
   build_push_ecr:
@@ -16,7 +17,11 @@ jobs:
                 role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           repo: tadashi-demo-release-eks-app
           tag: '${CIRCLE_SHA1}'
-      - run: kubectl
+      - aws-eks/update-kubeconfig-with-authenticator:
+          install-kubectl: true
+          kubectl-version: v1.28.3
+          cluster-name: tadashi-demo-release-eks
+      - run: kubectl get po
 
 workflows:
   test_and_deploy: 
