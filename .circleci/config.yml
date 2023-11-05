@@ -16,6 +16,7 @@ jobs:
                 role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           repo: tadashi-demo-release-eks-app
           tag: '${CIRCLE_SHA1}'
+      - run: kubectl
 
 workflows:
   test_and_deploy: 
