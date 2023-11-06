@@ -29,7 +29,7 @@ jobs:
           install-aws-cli: false
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
-      - run: kubectl apply -k ./manifest
+      - run: kubectl apply -f ./manifest
 
 workflows:
   test_and_deploy: 
