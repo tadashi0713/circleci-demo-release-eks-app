@@ -19,6 +19,7 @@ jobs:
           tag: '${CIRCLE_SHA1}'
       - aws-eks/update-kubeconfig-with-authenticator:
           install-aws-cli: false
+          aws-region: ap-northeast-1
           install-kubectl: true
           kubectl-version: v1.28.3
           cluster-name: tadashi-demo-release-eks
