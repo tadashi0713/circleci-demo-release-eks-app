@@ -6,7 +6,7 @@ orbs:
   aws-eks: circleci/aws-eks@2.2.0
 
 jobs:
-  release-eks:
+  build_push_ecr:
     machine:
       docker_layer_caching: true
     steps:
@@ -17,6 +17,14 @@ jobs:
                 role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           repo: tadashi-demo-release-eks-app
           tag: '${CIRCLE_SHA1}'
+
+  deploy_eks:
+    docker:
+      - image: cimg/aws:2023.09
+    steps:
+      - checkout
+      - aws-cli/setup:
+          role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
       - aws-eks/update-kubeconfig-with-authenticator:
           install-aws-cli: false
           aws-region: ap-northeast-1
@@ -28,6 +36,9 @@ jobs:
 workflows:
   test_and_deploy: 
     jobs:
-      - release-eks:
+      - build_push_ecr:
+          context:
+            - aws-oidc-fargate
+      - deploy_eks:
           context:
             - aws-oidc-fargate
