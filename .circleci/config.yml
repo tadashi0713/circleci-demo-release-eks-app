@@ -21,6 +21,8 @@ jobs:
   deploy_eks:
     docker:
       - image: cimg/aws:2023.09
+    environment:
+       PIPELINE_ID: << pipeline.id >>
     steps:
       - checkout
       - aws-cli/setup:
@@ -30,8 +32,6 @@ jobs:
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
       - run:
-          environments:
-            PIPELINE_ID: << pipeline.id >>
           command: |
             sudo apt update
             sudo apt install gettext
