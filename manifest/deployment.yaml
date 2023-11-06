@@ -2,25 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: app
+    app: demo-app
     version: 1.0.0
   annotations:
     circleci.com/project-id: 775531fd-7f01-4c74-8570-08cc0131ca00
-  name: app
+  name: demo-app
   namespace: default
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: app
+      app: demo-app
   template:
     metadata:
       labels:
-        app: app
+        app: demo-app
         version: 1.0.0
     spec:
       containers:
-        - image: app
-          name: app
+        - image: demo-app
+          name: demo-app
           ports:
             - containerPort: 80
