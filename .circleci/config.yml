@@ -31,7 +31,7 @@ jobs:
           cluster-name: tadashi-cci-demo-release
       - run:
           environments:
-            PIPELINE_ID: <<pipeline.id>>
+            PIPELINE_ID: << pipeline.id >>
           command: |
             sudo apt update
             sudo apt install gettext
