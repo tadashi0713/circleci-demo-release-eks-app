@@ -9,8 +9,6 @@ jobs:
   build_push_ecr:
     machine:
       docker_layer_caching: true
-    environment:
-      CIRCLE_SHA1_SHORT: ${CIRCLE_SHA1:0:7}
     steps:
       - checkout
       - aws-ecr/build_and_push_image: # AWS ECR Orb
@@ -18,14 +16,13 @@ jobs:
             - aws-cli/setup:
                 role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           repo: tadashi-demo-release-eks-app
-          tag: '${CIRCLE_SHA1_SHORT}'
+          tag: '${CIRCLE_SHA1:0:7}'
 
   deploy_eks:
     docker:
       - image: cimg/aws:2023.09
     environment:
        PIPELINE_ID: << pipeline.id >>
-        CIRCLE_SHA1_SHORT: ${CIRCLE_SHA1:0:7}
     steps:
       - checkout
       - aws-cli/setup:
@@ -38,6 +35,7 @@ jobs:
           command: |
             sudo apt update
             sudo apt install gettext
+            export CIRCLE_SHA1_SHORT=${CIRCLE_SHA1:0:7}
             envsubst < manifest/deployment.yaml | kubectl apply -f -
 
 workflows:
