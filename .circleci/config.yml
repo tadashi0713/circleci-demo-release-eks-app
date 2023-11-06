@@ -12,6 +12,8 @@ jobs:
     steps:
       - checkout
       - aws-ecr/build_and_push_image: # AWS ECR Orb
+          auth:
+            - aws-cli/setup
           repo: tadashi-demo-release-eks-app
           tag: '${CIRCLE_SHA1}'
       - aws-eks/update-kubeconfig-with-authenticator:
