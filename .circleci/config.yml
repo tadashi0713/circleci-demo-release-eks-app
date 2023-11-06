@@ -35,7 +35,7 @@ jobs:
           command: |
             sudo apt update
             sudo apt install gettext
-            export CIRCLE_SHA1_SHORT=${CIRCLE_SHA1:0:8}
+            export CIRCLE_SHA1_SHORT='${CIRCLE_SHA1:0:8}'
             envsubst < manifest/deployment.yaml | kubectl apply -f -
 
 workflows:
