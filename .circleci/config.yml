@@ -29,7 +29,11 @@ jobs:
           install-aws-cli: false
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
-      - run: kubectl apply -f ./manifest
+      - run: |
+          apk --no-cache add gettext
+          export PIPELINE_ID=<<pipeline.id>>
+          echo $PIPELINE_ID
+          envsubst < manifest/deployment.yaml | kubectl apply -f -
 
 workflows:
   test_and_deploy: 
@@ -40,3 +44,5 @@ workflows:
       - deploy_eks:
           context:
             - aws-oidc-fargate
+          requires:
+            - build_push_ecr
