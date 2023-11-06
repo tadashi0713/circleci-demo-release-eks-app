@@ -29,11 +29,14 @@ jobs:
           install-aws-cli: false
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
-      - run: |
-          apk --no-cache add gettext
-          export PIPELINE_ID=<<pipeline.id>>
-          echo $PIPELINE_ID
-          envsubst < manifest/deployment.yaml | kubectl apply -f -
+      - run:
+          environments:
+            PIPELINE_ID: <<pipeline.id>>
+          command: |
+            sudo apt update
+            sudo apt install gettext
+            echo $PIPELINE_ID
+            envsubst < manifest/deployment.yaml | kubectl apply -f -
 
 workflows:
   test_and_deploy: 
