@@ -6,7 +6,7 @@ metadata:
     version: 1.0.0
   annotations:
     circleci.com/cancel-release-enabled: "true"
-    circleci.com/job-number: $CIRCLE_BUILD_NUM
+    circleci.com/job-number: ${CIRCLE_BUILD_NUM}
     circleci.com/pipeline-id: 88dfee99-0348-407f-b113-dbf270cad093
     circleci.com/project-id: 775531fd-7f01-4c74-8570-08cc0131ca00
     circleci.com/promote-release-enabled: "true"
@@ -14,7 +14,7 @@ metadata:
     circleci.com/restore-version-enabled: "true"
     circleci.com/retry-release-enabled: "true"
     circleci.com/scale-component-enabled: "true"
-    circleci.com/workflow-id: $CIRCLE_WORKFLOW_ID
+    circleci.com/workflow-id: ${CIRCLE_WORKFLOW_ID}
   name: demo-app
   namespace: default
 spec:
@@ -29,7 +29,7 @@ spec:
         version: 1.0.0
     spec:
       containers:
-        - image: 660990364978.dkr.ecr.ap-northeast-1.amazonaws.com/tadashi-demo-release-eks-app:$CIRCLE_SHA1
+        - image: 660990364978.dkr.ecr.ap-northeast-1.amazonaws.com/tadashi-demo-release-eks-app:${CIRCLE_SHA1}
           name: demo-app
           ports:
             - containerPort: 80
