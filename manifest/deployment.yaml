@@ -5,7 +5,16 @@ metadata:
     app: demo-app
     version: 1.0.0
   annotations:
+    circleci.com/cancel-release-enabled: "true"
+    circleci.com/job-number: "43"
+    circleci.com/pipeline-id: 88dfee99-0348-407f-b113-dbf270cad093
     circleci.com/project-id: 775531fd-7f01-4c74-8570-08cc0131ca00
+    circleci.com/promote-release-enabled: "true"
+    circleci.com/restart-component-enabled: "true"
+    circleci.com/restore-version-enabled: "true"
+    circleci.com/retry-release-enabled: "true"
+    circleci.com/scale-component-enabled: "true"
+    circleci.com/workflow-id: b3b39279-1927-471d-a484-2440d9bc36f8
   name: demo-app
   namespace: default
 spec:
