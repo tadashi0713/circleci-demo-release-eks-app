@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
 - deployment.yaml
 images:
-- name: circleci-demo-release-eks-app
+- name: app
   newName: 660990364978.dkr.ecr.ap-northeast-1.amazonaws.com/tadashi-demo-release-eks-app
   newTag: 8e12dc7015e470fe7f5671f010d1dcfea19d0981
