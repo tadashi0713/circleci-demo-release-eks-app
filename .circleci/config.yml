@@ -12,25 +12,18 @@ jobs:
     steps:
       - checkout
       - aws-ecr/build_and_push_image: # AWS ECR Orb
-          auth:
-            - aws-cli/setup:
-                role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           repo: tadashi-demo-release-eks-app
           tag: '${CIRCLE_SHA1}'
       - aws-eks/update-kubeconfig-with-authenticator:
           install-aws-cli: false
-          aws-region: ap-northeast-1
-          # cluster-authentication-role-arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           aws-profile: default
           install-kubectl: true
           kubectl-version: v1.28.3
           cluster-name: tadashi-demo-release-eks
-          verbose: true
-      - run: kubectl get po
 
 workflows:
   test_and_deploy: 
     jobs:
       - build_push_ecr:
           context:
-            - aws-oidc-fargate
+            - aws-ce
