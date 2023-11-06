@@ -25,7 +25,7 @@ jobs:
       - checkout
       - aws-cli/setup:
           role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
-      - aws-eks/create-eks-cluster:
+      - aws-eks/create-cluster:
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
           full-ecr-access: true
