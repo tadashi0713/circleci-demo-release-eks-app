@@ -19,6 +19,7 @@ jobs:
           tag: '${CIRCLE_SHA1}'
       - aws-eks/update-kubeconfig-with-authenticator:
           install-aws-cli: false
+          aws-region: ap-northeast-1
           cluster-authentication-role-arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           aws-profile: default
           install-kubectl: true
