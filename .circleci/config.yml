@@ -35,7 +35,6 @@ jobs:
           command: |
             sudo apt update
             sudo apt install gettext
-            echo $PIPELINE_ID
             envsubst < manifest/deployment.yaml | kubectl apply -f -
 
 workflows:
