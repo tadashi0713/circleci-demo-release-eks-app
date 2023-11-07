@@ -7,6 +7,14 @@ orbs:
   aws-eks: circleci/aws-eks@2.2.0
 
 jobs:
+  e2e_test:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.39.0-jammy
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm run test:e2e
+
   build_push_ecr:
     machine:
       docker_layer_caching: true
@@ -45,6 +53,9 @@ workflows:
       - node/test:
           name: unit_test
           test-results-for: jest
+      - e2e_test:
+          requires:
+            - unit_test
       - build_push_ecr:
           context:
             - aws-oidc-fargate
