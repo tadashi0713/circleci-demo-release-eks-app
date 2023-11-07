@@ -42,9 +42,16 @@ jobs:
 workflows:
   test_and_deploy: 
     jobs:
+      - node/test:
+          name: unit_test
+          test-results-for: jest
       - build_push_ecr:
           context:
             - aws-oidc-fargate
+          filters:
+            branches:
+              only:
+                - main
       - deploy_eks:
           context:
             - aws-oidc-fargate
