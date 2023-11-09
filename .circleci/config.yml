@@ -45,6 +45,8 @@ workflows:
       - node/test:
           name: unit_test
           test-results-for: jest
+      - node/run:
+          npm-run: lint
       - build_push_ecr:
           context:
             - aws-oidc-fargate
