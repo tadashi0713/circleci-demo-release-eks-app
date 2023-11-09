@@ -46,6 +46,7 @@ workflows:
           name: unit_test
           test-results-for: jest
       - node/run:
+          name: lint
           npm-run: lint
       - build_push_ecr:
           context:
