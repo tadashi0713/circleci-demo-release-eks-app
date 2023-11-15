@@ -55,7 +55,7 @@ workflows:
           cluster_name: tadashi-cci-demo-release
           pipeline_id: << pipeline.id >>
           repo_name: tadashi-demo-release-eks-app
-          role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
+          role_arn: "arn:aws:iam::660990364978:role/tadashi_oidc_fargate"
           context:
             - aws-oidc-fargate
           filters:
