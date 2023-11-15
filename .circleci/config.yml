@@ -7,9 +7,11 @@ orbs:
   aws-eks: circleci/aws-eks@2.2.0
 
 jobs:
-  build_push_ecr:
+  deploy_eks:
     machine:
       docker_layer_caching: true
+    environment:
+       PIPELINE_ID: << pipeline.id >>
     steps:
       - checkout
       - aws-ecr/build_and_push_image: # AWS ECR Orb
@@ -18,21 +20,12 @@ jobs:
                 role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
           repo: tadashi-demo-release-eks-app
           tag: '${CIRCLE_SHA1}'
-
-  deploy_eks:
-    docker:
-      - image: cimg/aws:2023.09
-    environment:
-       PIPELINE_ID: << pipeline.id >>
-    steps:
-      - checkout
-      - aws-cli/setup:
-          role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
       - aws-eks/update-kubeconfig-with-authenticator:
           install-aws-cli: false
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
       - run:
+          name: Apply Kubernetes Manifest to EKS
           command: |
             sudo apt update
             sudo apt install gettext
@@ -48,15 +41,10 @@ workflows:
       - node/run:
           name: lint
           npm-run: lint
-      - build_push_ecr:
+      - deploy_eks:
           context:
             - aws-oidc-fargate
           filters:
             branches:
               only:
                 - main
-      - deploy_eks:
-          context:
-            - aws-oidc-fargate
-          requires:
-            - build_push_ecr
