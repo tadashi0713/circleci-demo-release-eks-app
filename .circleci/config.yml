@@ -8,6 +8,31 @@ orbs:
   # custom-release: tadashi0713/custom-release@0.0.1
 
 jobs:
+  e2e_test:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.34.3-focal
+    steps:
+      - checkout
+      - node/install-packages
+      - run: | 
+          TESTFILES=$(circleci tests glob "e2e/*.spec.ts")
+          echo $TESTFILES | circleci tests run --command="xargs npx playwright test" --verbose
+      - store_test_results:
+          path: results.xml
+
+  e2e_test_parallel:
+    parallelism: 10 # Parallelism
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.34.3-focal
+    steps:
+      - checkout
+      - node/install-packages
+      - run: | 
+          TESTFILES=$(circleci tests glob "e2e/*.spec.ts")
+          echo $TESTFILES | circleci tests run --command="xargs npx playwright test" --verbose --split-by=timings
+      - store_test_results:
+          path: results.xml
+
   deploy_eks:
     machine:
       docker_layer_caching: true
@@ -40,9 +65,12 @@ workflows:
       - node/test:
           name: unit_test
           test-results-for: jest
-      - node/run:
-          name: lint
-          npm-run: lint
+      - e2e_test:
+          requires:
+            - unit_test
+      - e2e_test_parallel:
+          requires:
+            - unit_test
       - deploy_eks:
           context:
             - aws-oidc-fargate

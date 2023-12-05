@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
-    "test:e2e": "playwright test e2e"
+    "test": "jest src",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "14.0.1",
