@@ -18,18 +18,12 @@ metadata:
   name: demo-app
   namespace: default
 spec:
-  replicas: 5
+  replicas: 4
   strategy:
     canary:
       steps:
-      - setWeight: 20
+      - setWeight: 50
       - pause: {}
-      - setWeight: 40
-      - pause: {duration: 10}
-      - setWeight: 60
-      - pause: {duration: 10}
-      - setWeight: 80
-      - pause: {duration: 10}
   selector:
     matchLabels:
       app: demo-app
