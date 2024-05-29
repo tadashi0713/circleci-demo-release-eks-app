@@ -32,19 +32,23 @@ jobs:
       - store_test_results:
           path: results.xml
 
-  deploy_eks:
+  build_and_push_ecr:
     machine:
       docker_layer_caching: true
-    environment:
-       PIPELINE_ID: << pipeline.id >>
     steps:
       - checkout
-      - aws-ecr/build_and_push_image: # AWS ECR Orb
+      - aws-ecr/build_and_push_image:
           auth:
             - aws-cli/setup:
-                role_arn: arn:aws:iam::660990364978:role/tadashi_oidc_fargate
+                role_arn: ${AWS_ROLE_ARN}
           repo: tadashi-demo-release-eks-app
           tag: '${CIRCLE_SHA1}'
+
+  deploy_eks:
+    docker:
+      - image: cimg/aws:2024.03.1
+    steps:
+      - checkout
       - aws-eks/update-kubeconfig-with-authenticator:
           install-aws-cli: false
           install-kubectl: true
@@ -53,8 +57,6 @@ jobs:
       - run:
           name: Apply Kubernetes Manifest to EKS
           command: |
-            sudo apt update
-            sudo apt install gettext
             export CIRCLE_SHA1_SHORT=${CIRCLE_SHA1:0:8}
             envsubst < manifest/rollout.yaml | kubectl apply -f -
 
@@ -70,10 +72,15 @@ workflows:
       - e2e_test_parallel:
           requires:
             - unit_test
-      - deploy_eks:
+      - build_and_push_ecr:
           context:
             - aws-oidc-fargate
           filters:
             branches:
               only:
                 - main
+      - deploy_eks:
+          context:
+            - aws-oidc-fargate
+          requires:
+            - build_and_push_ecr
