@@ -49,8 +49,10 @@ jobs:
       - image: cimg/aws:2024.03.1
     steps:
       - checkout
+      - aws-cli/setup:
+          role_arn: ${AWS_ROLE_ARN}
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-authentication-role-arn: ${AWS_ROLE_ARN}
+          install-aws-cli: false
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
       - run:
