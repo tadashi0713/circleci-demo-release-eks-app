@@ -50,7 +50,6 @@ jobs:
     steps:
       - checkout
       - aws-eks/update-kubeconfig-with-authenticator:
-          install-kubectl: true
           cluster-authentication-role-arn: ${AWS_ROLE_ARN}
           aws-region: ap-northeast-1
           cluster-name: tadashi-cci-demo-release
