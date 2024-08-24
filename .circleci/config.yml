@@ -9,7 +9,7 @@ orbs:
 jobs:
   e2e_test:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.39.0-focal
+      - image: mcr.microsoft.com/playwright:v1.46.1-focal
     steps:
       - checkout
       - node/install-packages
@@ -22,7 +22,7 @@ jobs:
   e2e_test_parallel:
     parallelism: 10 # Parallelism
     docker:
-      - image: mcr.microsoft.com/playwright:v1.39.0-focal
+      - image: mcr.microsoft.com/playwright:v1.46.1-focal
     steps:
       - checkout
       - node/install-packages
